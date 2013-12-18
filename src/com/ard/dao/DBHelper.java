@@ -18,6 +18,9 @@ public class DBHelper {
 	private static ComboPooledDataSource ds = new ComboPooledDataSource();
 	static {
 		try {
+			
+			
+			System.out.println("");
 
 			Properties p = new Properties();
 			p.load(DBHelper.class.getResourceAsStream(c3p0Properties));
