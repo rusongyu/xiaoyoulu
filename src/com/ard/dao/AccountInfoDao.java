@@ -13,55 +13,66 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-
+import com.ard.model.AccountInfoBean;
 
 /**
  * @author geek
- *
+ * 
  */
 public class AccountInfoDao {
 
-	
 	private Connection manager = null; // 数据库连接管理器。
 	private PreparedStatement pstmt = null;
 	private static Logger log = Logger.getLogger(AccountInfoDao.class);
 
-	private Integer watageNum = 0;
-	private Integer countA = 0;
-
 	/**
-	 * 功能：统计数据库中最新日期数据
 	 * 
-	 * @param startDate
-	 * @param endDate
-	 * @return
+	 * @DoSomething:存储校友账号信息
+	 * @MethodName:getMaxDateDB
+	 * @Params:String
 	 */
-	public String getMaxDateDB() {
-		String sql = "select max(reg_date) as maxDate  FROM  reg_wastage_rate";
+	public String saveAccountInfoDB(AccountInfoBean accountInfoBean) {
+		String sql = "insert into accountinfo(AccountName,Name,Gender,StartYear,EndYear,Yuan,Xi,MobilePhone"
+				+ ",Status,RegisterTime,ValidatedTime,SortField,IsBackground)  values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		manager = DBHelper.getConnection();
 		ResultSet rset = null;
 		String maxDate = null;
 		try {
 			pstmt = manager.prepareStatement(sql);
 
-			rset = pstmt.executeQuery(sql);
-			while (rset.next()) {
-				maxDate = rset.getString("maxDate");
-			}
-			log.info("查询成功,maxDate=" + maxDate);
+			pstmt.setString(1, accountInfoBean.getAccountName());
+			pstmt.setString(2, accountInfoBean.getName());
+			pstmt.setInt(3, accountInfoBean.getGender());
+			pstmt.setInt(4, accountInfoBean.getStartYear());
+			pstmt.setInt(5, accountInfoBean.getEndYear());
+			pstmt.setInt(6, accountInfoBean.getYuan());
+			pstmt.setInt(7, accountInfoBean.getXi());
+			pstmt.setString(8, accountInfoBean.getMobilePhone());
+			pstmt.setInt(9, accountInfoBean.getStatus());
+			pstmt.setString(10, accountInfoBean.getRegisterTime());
+			pstmt.setString(11, accountInfoBean.getValidatedTime());
+			pstmt.setString(12, accountInfoBean.getSortField());
+			pstmt.setInt(13, accountInfoBean.getIsBackground());
+			pstmt.execute(sql);
+
+			log.info("saveAccountInfoDB存储成功,AccountNam="
+					+ accountInfoBean.getAccountName());
 		} catch (SQLException ex) {
-			log.error("getMaxDateDB异常" + ex);
+			log.error("saveAccountInfoDB异常" + ex);
 		} finally {
 			try {
-				rset.close();
 				pstmt.close();
 				manager.close();
 			} catch (SQLException ex) {
-				log.error("getMaxDateDB关闭异常" + ex);
+				log.error("saveAccountInfoDB关闭异常" + ex);
 			}
 
 		}
 		return maxDate;
 	}
+
+	
+	
+	
 	
 }
