@@ -31,12 +31,10 @@ public class AccountInfoDao {
 	 * @MethodName:getMaxDateDB
 	 * @Params:String
 	 */
-	public String saveAccountInfoDB(AccountInfoBean accountInfoBean) {
+	public void saveAccountInfoDB(AccountInfoBean accountInfoBean) {
 		String sql = "insert into accountinfo(AccountName,Name,Gender,StartYear,EndYear,Yuan,Xi,MobilePhone"
 				+ ",Status,RegisterTime,ValidatedTime,SortField,IsBackground)  values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		manager = DBHelper.getConnection();
-		ResultSet rset = null;
-		String maxDate = null;
 		try {
 			pstmt = manager.prepareStatement(sql);
 
@@ -68,9 +66,11 @@ public class AccountInfoDao {
 			}
 
 		}
-		return maxDate;
 	}
 
+	
+	
+	
 	
 	
 	
